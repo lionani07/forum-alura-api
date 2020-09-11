@@ -16,9 +16,9 @@ public class TopicoDto {
     private final Long id;
     private final String titulo;
     private final String mensagem;
-
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private final LocalDateTime dataCriacao;
+    private final String autor;
 
     public static TopicoDto of(final Topico topico) {
         return TopicoDto
@@ -27,6 +27,7 @@ public class TopicoDto {
                 .titulo(topico.getTitulo())
                 .mensagem(topico.getMensagem())
                 .dataCriacao(topico.getDataCriacao())
+                .autor(topico.getAutor().getNome())
                 .build();
     }
 
