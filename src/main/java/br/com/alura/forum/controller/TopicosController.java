@@ -1,5 +1,6 @@
 package br.com.alura.forum.controller;
 
+import br.com.alura.forum.controller.dto.TopicoDto;
 import br.com.alura.forum.model.Curso;
 import br.com.alura.forum.model.Topico;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,11 @@ import java.util.List;
 public class TopicosController {
 
     @GetMapping
-    public List<Topico> findAll() {
-        final var topic = new Topico("Duvida", "Port de spring", new Curso("Spring", "Programacao"));
-        return List.of(topic, topic);
+    public List<TopicoDto> findAll() {
+        final var topico = new Topico("Duvida", "Duvida de Srping", new Curso("Spring", "Programacao"));
+
+        final var topicoDto = TopicoDto.of(topico);
+
+        return TopicoDto.of(List.of(topico, topico));
     }
 }
