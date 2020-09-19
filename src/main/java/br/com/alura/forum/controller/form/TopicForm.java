@@ -1,13 +1,16 @@
 package br.com.alura.forum.controller.form;
 
-import br.com.alura.forum.model.Topico;
-import br.com.alura.forum.repository.CursoRepository;
 import lombok.Getter;
+
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class TopicForm {
 
+    @NotBlank
     private String titulo;
+    @NotBlank
     private String mensagem;
+    @NotBlank
     private String nomeCurso;
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class TopicosController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicoDto> save(@RequestBody TopicForm topicForm, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<TopicoDto> save(@RequestBody @Valid TopicForm topicForm, UriComponentsBuilder uriComponentsBuilder) {
         final var topicoSaved = this.topicosService.save(topicForm);
 
         final var location = uriComponentsBuilder
