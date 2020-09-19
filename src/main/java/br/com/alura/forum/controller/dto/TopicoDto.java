@@ -7,7 +7,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Builder(toBuilder = true)
 @Getter
@@ -27,7 +30,7 @@ public class TopicoDto {
                 .titulo(topico.getTitulo())
                 .mensagem(topico.getMensagem())
                 .dataCriacao(topico.getDataCriacao())
-                .autor(topico.getAutor().getNome())
+                .autor(isNull(topico.getAutor()) ? null : topico.getAutor().getNome())
                 .build();
     }
 

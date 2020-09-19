@@ -10,9 +10,4 @@ public class TopicForm {
     private String titulo;
     private String mensagem;
     private String nomeCurso;
-
-    public Topico toTopico(final CursoRepository cursoRepository) {
-        final var curso = cursoRepository.findByNomeDoCurso(this.nomeCurso);
-        return new Topico(this.titulo, this.mensagem, curso);
-    }
 }
