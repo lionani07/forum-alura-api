@@ -1,5 +1,6 @@
 package br.com.alura.forum.controller;
 
+import br.com.alura.forum.controller.dto.DetalheTopicoDto;
 import br.com.alura.forum.controller.dto.TopicoDto;
 import br.com.alura.forum.controller.form.TopicForm;
 import br.com.alura.forum.service.TopicosService;
@@ -34,4 +35,11 @@ public class TopicosController {
         return ResponseEntity.created(location).body(topicoSaved);
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DetalheTopicoDto> detail(@PathVariable Long id) {
+        final var detail = this.topicosService.findById(id);
+        return ResponseEntity.ok(detail);
+    }
+
 }
