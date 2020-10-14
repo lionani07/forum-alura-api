@@ -3,6 +3,7 @@ package br.com.alura.forum.controller;
 import br.com.alura.forum.controller.dto.DetalheTopicoDto;
 import br.com.alura.forum.controller.dto.TopicoDto;
 import br.com.alura.forum.controller.form.TopicForm;
+import br.com.alura.forum.controller.form.TopicFormToUpdate;
 import br.com.alura.forum.service.TopicosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,11 @@ public class TopicosController {
     public ResponseEntity<DetalheTopicoDto> detail(@PathVariable Long id) {
         final var detail = this.topicosService.findById(id);
         return ResponseEntity.ok(detail);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody TopicFormToUpdate topicFormToUpdate) {
+        return this.topicosService.update(id, topicFormToUpdate);
     }
 
 }

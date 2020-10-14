@@ -3,10 +3,12 @@ package br.com.alura.forum.service;
 import br.com.alura.forum.controller.dto.DetalheTopicoDto;
 import br.com.alura.forum.controller.dto.TopicoDto;
 import br.com.alura.forum.controller.form.TopicForm;
+import br.com.alura.forum.controller.form.TopicFormToUpdate;
 import br.com.alura.forum.model.Topico;
 import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.service.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +42,16 @@ public class TopicosService {
                 .map(DetalheTopicoDto::of)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
 
+    }
+
+    public ResponseEntity<TopicoDto> update(Long id, TopicFormToUpdate topicFormToUpdate) {
+
+        final var topic = this.topicoRepository
+                .findById(id)
+                .map(topico -> topico.toUpdate(topicFormToUpdate))
+                .map(this.topicoRepository::save)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+
+        return ResponseEntity.ok(TopicoDto.of(topic));
     }
 }

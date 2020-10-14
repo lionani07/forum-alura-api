@@ -1,5 +1,6 @@
 package br.com.alura.forum.model;
 
+import br.com.alura.forum.controller.form.TopicFormToUpdate;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,6 +36,14 @@ public class Topico {
 		this.titulo = titulo;
 		this.mensagem = mensagem;
 		this.curso = curso;
+	}
+
+	public Topico toUpdate(final TopicFormToUpdate topicForm) {
+		return this.toBuilder()
+				.titulo(topicForm.getTitulo())
+				.mensagem(topicForm.getMensagem())
+				.build();
+
 	}
 
 }
