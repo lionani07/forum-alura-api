@@ -8,6 +8,7 @@ import br.com.alura.forum.service.TopicosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,9 +26,14 @@ public class TopicosController {
     public Page<TopicoDto> findAll(
             @RequestParam(required = false) String nomeCurso,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "1") int size) {
+            @RequestParam(defaultValue = "1") int size,
+            @RequestParam(defaultValue = "id") String orderBy,
+            @RequestParam(defaultValue = "DESC") String direction) {
 
-        return this.topicosService.findAll(nomeCurso, PageRequest.of(page, size));
+        final var sortDirection = Sort.Direction.valueOf(direction.toUpperCase());
+        final var sort = Sort.by(sortDirection, orderBy);
+
+        return this.topicosService.findAll(nomeCurso, PageRequest.of(page, size,sort));
     }
 
     @PostMapping
