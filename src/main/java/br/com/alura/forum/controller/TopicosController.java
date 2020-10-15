@@ -44,8 +44,14 @@ public class TopicosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody TopicFormToUpdate topicFormToUpdate) {
+    public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid TopicFormToUpdate topicFormToUpdate) {
         return this.topicosService.update(id, topicFormToUpdate);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        this.topicosService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
 }

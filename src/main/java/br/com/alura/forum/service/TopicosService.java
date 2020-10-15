@@ -8,6 +8,7 @@ import br.com.alura.forum.model.Topico;
 import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.service.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,14 @@ public class TopicosService {
                 .orElseThrow(() -> new ResourceNotFoundException(id));
 
         return ResponseEntity.ok(TopicoDto.of(topic));
+    }
+
+    public void delete(final Long id) {
+        try {
+            this.topicoRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }
+
     }
 }
