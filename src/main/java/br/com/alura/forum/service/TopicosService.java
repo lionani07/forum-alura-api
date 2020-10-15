@@ -9,10 +9,10 @@ import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.service.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -23,11 +23,11 @@ public class TopicosService {
     private final TopicoRepository topicoRepository;
     private final CursosService cursoService;
 
-    public List<TopicoDto> findAll(final String nomeCurso) {
+    public Page<TopicoDto> findAll(final String nomeCurso, Pageable pageable) {
         if (isNull(nomeCurso)) {
-            return TopicoDto.of(this.topicoRepository.findAll());
+            return TopicoDto.of(this.topicoRepository.findAll(pageable));
         }
-        return TopicoDto.of(this.topicoRepository.findByCurso_Nome(nomeCurso));
+        return TopicoDto.of(this.topicoRepository.findByCurso_Nome(nomeCurso, pageable));
     }
 
 

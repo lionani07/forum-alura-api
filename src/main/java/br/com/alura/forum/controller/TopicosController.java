@@ -6,12 +6,13 @@ import br.com.alura.forum.controller.form.TopicForm;
 import br.com.alura.forum.controller.form.TopicFormToUpdate;
 import br.com.alura.forum.service.TopicosService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +22,12 @@ public class TopicosController {
     private final TopicosService topicosService;
 
     @GetMapping
-    public List<TopicoDto> findAll(String nomeCurso) {
-        return this.topicosService.findAll(nomeCurso);
+    public Page<TopicoDto> findAll(
+            @RequestParam(required = false) String nomeCurso,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int size) {
+
+        return this.topicosService.findAll(nomeCurso, PageRequest.of(page, size));
     }
 
     @PostMapping

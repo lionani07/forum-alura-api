@@ -4,10 +4,9 @@ import br.com.alura.forum.model.Topico;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder(toBuilder = true)
 @Getter
@@ -29,10 +28,7 @@ public class TopicoDto {
                 .build();
     }
 
-    public static List<TopicoDto> of(final List<Topico> topicos) {
-        return topicos
-                .stream()
-                .map(TopicoDto::of)
-                .collect(Collectors.toList());
+    public static Page<TopicoDto> of(final Page<Topico> topicos) {
+        return topicos.map(TopicoDto::of);
     }
 }
