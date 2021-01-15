@@ -48,4 +48,12 @@ public class ForumTokenService {
         return toDate(expiration);
     }
 
+    public boolean validate(final String token) {
+        try {
+            Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
