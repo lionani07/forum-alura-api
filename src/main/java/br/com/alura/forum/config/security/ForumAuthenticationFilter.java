@@ -1,6 +1,9 @@
 package br.com.alura.forum.config.security;
 
 import br.com.alura.forum.controller.dto.TokenTipo;
+import br.com.alura.forum.service.UsuarioService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -15,18 +18,23 @@ import static java.util.regex.Pattern.quote;
 public class ForumAuthenticationFilter extends OncePerRequestFilter {
 
     private final ForumTokenService forumTokenService;
+    private final UsuarioService usuarioService;
 
-    public ForumAuthenticationFilter(ForumTokenService forumTokenService) {
+    public ForumAuthenticationFilter(ForumTokenService forumTokenService, UsuarioService usuarioService) {
         this.forumTokenService = forumTokenService;
+        this.usuarioService = usuarioService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final var token = getToken(request);
-        final var isValid = this.forumTokenService.validate(token);
+        final var isTokenValid = this.forumTokenService.validate(token);
 
-        System.out.printf("Token %s is valid: %s%n", token, isValid);
+        if (isTokenValid) {
+            authenticUser(token);
+        }
+
         filterChain.doFilter(request, response);
     }
 
@@ -38,5 +46,13 @@ public class ForumAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
+    private void authenticUser(final String token) {
+        final var userId = forumTokenService.getUserId(token);
+        final var usuario = usuarioService.findById(userId);
+        if (usuario.isPresent()) {
+            final var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.get().getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 package br.com.alura.forum.config.security;
 
+import br.com.alura.forum.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private ForumTokenService forumTokenService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     @Bean
@@ -48,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new ForumAuthenticationFilter(this.forumTokenService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new ForumAuthenticationFilter(this.forumTokenService, this.usuarioService), UsernamePasswordAuthenticationFilter.class);
     }
 
     // Configuraçoes de recursos estáticos...

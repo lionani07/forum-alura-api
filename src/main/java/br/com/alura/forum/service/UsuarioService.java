@@ -17,4 +17,8 @@ public class UsuarioService {
         return this.usuarioRepository.findByEmail(email);
     }
 
+    public Optional<Usuario> findById(final Long id) {
+        return this.usuarioRepository.findById(id);
+    }
+
 }

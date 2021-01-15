@@ -1,6 +1,8 @@
 package br.com.alura.forum.config.security;
 
 import br.com.alura.forum.model.Usuario;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 @Service
 public class ForumTokenService {
@@ -49,11 +54,22 @@ public class ForumTokenService {
     }
 
     public boolean validate(final String token) {
+        return nonNull(getClaims(token));
+    }
+
+    public Long getUserId(String token) {
+        final var claims = getClaims(token);
+        if (nonNull(claims)) {
+            return Long.parseLong(claims.getBody().getSubject());
+        }
+        return null;
+    }
+
+    private Jws<Claims> getClaims(final String token) {
         try {
-            Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
-            return true;
+            return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
 }
