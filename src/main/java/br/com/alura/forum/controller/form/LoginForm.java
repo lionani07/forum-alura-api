@@ -1,4 +1,4 @@
-package br.com.alura.forum.model;
+package br.com.alura.forum.controller.form;
 
 import lombok.Builder;
 import lombok.Getter;
